@@ -5,10 +5,9 @@ const CountryStyled = styled.div`
   width: 264px;
   text-align: left;
   border-radius: 5px;
-  margin: 1rem;
   overflow: hidden;
-  box-shadow: 0 0 7px 2px rgba(0,0,0,.2)
-  }
+  box-shadow: 0 0 7px 2px rgba(0,0,0,.2);
+  
   img {
     width: 100%;
     height: 160px;
