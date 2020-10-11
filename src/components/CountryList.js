@@ -13,8 +13,22 @@ const CountryListStyled = styled.div`
 `;
 
 const CountryList = () => {
+    const [inputValue, setInputValue] = useState('')
     const dispatch = useDispatch();
-    const countryList = useSelector((state) => state.countryList)
+
+    const countryListByName = useSelector((state) => state.countryListByName)
+
+
+    const countryList = useSelector((state) => {
+        if ('' !== state.filterByRegion) {
+            return state.coutryFilteredByRegion;
+        }
+        if (countryListByName.length > 0) {
+            return countryListByName
+        }
+
+        return state.countryList;
+    })
     console.log(countryList);
     // const [countryList, setCountryList] = useState([])
     useEffect(() => {
@@ -32,8 +46,33 @@ const CountryList = () => {
             })
             .catch(() => console.log("Hubo un erroe"))
     }, [])
+    const filterByName = (e) => {
+        setInputValue(e.target.value)
+        dispatch({
+            type: 'SET_COUNTRY_BY_NAME',
+            payload: e.target.value
+        })
+    }
+    const clearInput = () => {
+        dispatch({
+            type: 'SET_COUNTRY_BY_NAME',
+            payload: ''
+        })
+        setInputValue('')
+    }
     return (
         <CountryListStyled>
+            <input type="text" value={inputValue} onChange={filterByName} />
+            {
+                inputValue &&
+                <button onClick={clearInput}>X</button>
+            }
+            {
+                countryListByName.length === 0 && inputValue &&
+                <p>
+                    <strong>{inputValue}</strong> Not found in countries
+        </p>
+            }
             {
                 countryList.map(({ flag, name, population, region, capital }) => {
                     return (
